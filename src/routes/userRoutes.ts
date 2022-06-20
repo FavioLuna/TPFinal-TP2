@@ -1,4 +1,5 @@
-import {Request, Response, Router} from 'express';
+import {Router} from 'express';
+import userController from '../controllers/userController';
 
 class UserRoutes {
     
@@ -9,12 +10,8 @@ class UserRoutes {
         this.routes()
     }
 
-    getUser(req: Request, res: Response){
-        res.send('Hello im me')
-    }
-
     routes(){
-        this.router.get('/user/me', this.getUser);
+        this.router.get('/user/me', userController.getUser);
     }
  
 }
