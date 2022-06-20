@@ -1,16 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const validator = require('validator');
 const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
-        trim: true, //se usa para sacar espacios vacios adelante y detras
+        trim: true,
+        validate(value) {
+            if (validator.isEmpty(value)) {
+                throw new Error("Please enter a name");
+            }
+        }
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error("Email is not valid");
+            }
+        }
     },
     password: {
         type: String,

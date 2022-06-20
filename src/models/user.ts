@@ -1,16 +1,27 @@
 import {Schema, model} from 'mongoose'
-
+const validator = require('validator');
 
 const userSchema = new Schema({
     name: {
         type: String, //tipo de dato
         required: true, //si es requerido o no
         trim: true, //se usa para sacar espacios vacios adelante y detras
+        validate(value) {
+            if (validator.isEmpty(value)) {
+                throw new Error("Please enter a name");
+            }
+        }
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate(value){
+            if (!validator.isEmail(value)) {
+                throw new Error("Email is not valid");
+                
+            }
+        }
     },
     password: {
         type: String,
