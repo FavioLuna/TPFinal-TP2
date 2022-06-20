@@ -6,7 +6,7 @@ const userSchema = new Schema({
         type: String, //tipo de dato
         required: true, //si es requerido o no
         trim: true, //se usa para sacar espacios vacios adelante y detras
-        validate(value) {
+        validate(value: String) {
             if (validator.isEmpty(value)) {
                 throw new Error("Please enter a name");
             }
@@ -16,10 +16,9 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        validate(value){
+        validate(value: any){
             if (!validator.isEmail(value)) {
                 throw new Error("Email is not valid");
-                
             }
         }
     },
@@ -27,7 +26,12 @@ const userSchema = new Schema({
         type: String,
         minLength: 8,
         trim: true,
-        required:true 
+        required:true,
+        validate(value: String) {
+            if (validator.isEmpty(value)) {
+                throw new Error("Please enter a name");
+            }
+        }
     }, 
     admin:{
         type: Boolean,
@@ -39,4 +43,4 @@ const userSchema = new Schema({
     }]
 });
 //BUSCAR COMO CIFRAR CONSTASEÑAS
-export default model('User', userSchema) //Agrego modelo a la base de datos, en base a lo recien detallado
+export default model('User', userSchema) //Exporto el modelo, primer parametro nombre, segundo el shechma que usa.

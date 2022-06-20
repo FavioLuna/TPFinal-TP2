@@ -27,7 +27,12 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         minLength: 8,
         trim: true,
-        required: true
+        required: true,
+        validate(value) {
+            if (validator.isEmpty(value)) {
+                throw new Error("Please enter a name");
+            }
+        }
     },
     admin: {
         type: Boolean,
@@ -39,4 +44,4 @@ const userSchema = new mongoose_1.Schema({
         }]
 });
 //BUSCAR COMO CIFRAR CONSTASEÑAS
-exports.default = (0, mongoose_1.model)('User', userSchema); //Agrego modelo a la base de datos, en base a lo recien detallado
+exports.default = (0, mongoose_1.model)('User', userSchema); //Exporto el modelo, primer parametro nombre, segundo el shechma que usa.

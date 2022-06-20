@@ -29,7 +29,7 @@ class Server{
         //Setting
         this.app.set('port', process.env.PORT || 3000);
         //MiddleWares
-        this.app.use(morgan('dev'));
+        this.app.use(morgan('dev')); 
         this.app.use(express.json());
         //Para soportar envios desde formularios
         this.app.use(express.urlencoded({extended: false}))
