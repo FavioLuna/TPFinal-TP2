@@ -12,17 +12,19 @@ class UserRoutes {
     }
     routes() {
         //CREAR USUARIO
-        this.router.post('/', userController_1.default.createUser);
+        this.router.post('/users', userController_1.default.createUser);
         //LOGIN
-        this.router.post('/login', userController_1.default.login);
+        this.router.post('/users/login', userController_1.default.login);
         //LOGOUT
-        this.router.post('/logout', userController_1.default.logout);
+        this.router.post('/users/logout', userController_1.default.logout);
         //GET USUARIO
-        this.router.get('/me', userController_1.default.getUser);
+        this.router.get('/users/me/:id', userController_1.default.getUser);
+        //GET ALL USERS
+        this.router.get('/users/all', userController_1.default.getAllUsers);
         //GET ALL SHIRTS OF USER 
         //this.router.get('/me/shirts', userController.getAllUserShirts);
         //DELETE USUARIO
-        this.router.delete('/me', userController_1.default.deleteUser);
+        this.router.delete('/users/me/:id', userController_1.default.deleteUser);
     }
 }
 const userRoutes = new UserRoutes();

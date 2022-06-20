@@ -15,8 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
 class UserController {
     createUser(req, res) {
-        console.log(req.body);
-        res.json('Received');
+        return __awaiter(this, void 0, void 0, function* () {
+            const newUser = new user_1.default(req.body); //Tomo los datos del body de la Request y los uso para crear un nuevo user
+            yield newUser.save();
+            res.json({ data: newUser });
+        });
     }
     login(req, res) {
         res.send('Hello im LOGIN');
@@ -26,15 +29,29 @@ class UserController {
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            //populete me sirve para ver el contenido del shcema.object.id
+            //En este caso le pido todo, pero como segundo parametro puedo especificar qué ver
+            //especificado dentro del segundo parametro entre comillas simples separado por espacios
+            //con - le puedo sacar qué datos 
+            const user = yield user_1.default.findById({ id: req.params.id }).populate('shirts');
+            res.json(user);
+        });
+    }
+    getAllUsers(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
             const users = yield user_1.default.find();
             res.json(users);
         });
     }
-    /*     getAllUserShirts(req: Request, res: Response){
-            res.send('Hello im me')
-        } */
+    /*  getAllUserShirts(req: Request, res: Response){
+        res.send('Hello im me')
+    } */
     deleteUser(req, res) {
-        res.send('Hello im DELETEUSER');
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            yield user_1.default.findOneAndDelete({ id });
+            res.json({ response: 'User Deleted successfully' });
+        });
     }
 }
 const userController = new UserController();
