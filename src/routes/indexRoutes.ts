@@ -10,7 +10,6 @@ class IndexRoutes{
     }
 
     routes(){
-        this.router.get('/',(req, res) => ('Api: /api/posts'))
         
     }
 }

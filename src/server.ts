@@ -5,7 +5,7 @@ import indexRoutes from "./routes/indexRoutes";
 import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors'; 
-import userRoutes from './routes/userRoutes';
+import userRoutes from "./routes/userRoutes";
 
 
 class Server{
@@ -40,7 +40,7 @@ class Server{
 
     routes(){
         this.app.use(indexRoutes);
-        this.app.use(userRoutes);
+        this.app.use('/users',userRoutes);
     }
 
     start(){
