@@ -40,7 +40,7 @@ class Server{
 
     routes(){
         this.app.use(indexRoutes);
-        this.app.use('/users',userRoutes);
+        this.app.use(userRoutes);
     }
 
     start(){
