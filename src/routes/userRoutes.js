@@ -20,7 +20,7 @@ class UserRoutes {
         //GET ALL USERS
         this.router.get('/users', userController_1.default.getAllUsers);
         //GET ALL SHIRTS OF USER 
-        //this.router.get('/me/shirts', userController.getAllUserShirts);
+        //this.router.get('/user/shirts', userController.getAllUserShirts);
         //GET USUARIO
         this.router.get('/user/:id', userController_1.default.getUser);
         //DELETE USUARIO
