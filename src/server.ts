@@ -1,9 +1,11 @@
 import express from "express";
+//Morgan es un modulo permite ver por consola las peticiones que lleguen, permitiendo tener más información
 import morgan from "morgan";
-import helmet from "helmet";
-import indexRoutes from "./routes/indexRoutes";
+//Modulo para conectarse a MongoDB
 import mongoose from 'mongoose';
+//Modulo que comprime los body del response para los request que pasen por el mismo.
 import compression from 'compression';
+//Con Cors permitimos requests de cualquier origen. Permitiendo configurar las politicas CORS.
 import cors from 'cors'; 
 import userRoutes from "./routes/userRoutes";
 import shirtRoutes from "./routes/shirtRoutes";
@@ -28,19 +30,18 @@ class Server{
             useUnifiedTopology: true
         }).then(db => console.log('DB is connected'))
         //Setting
+        //Le estamos diciendo que si encuentra un puerto en el sistema que lo use, en su defecto usara el puerto 3000
         this.app.set('port', process.env.PORT || 3000);
         //MiddleWares
-        this.app.use(morgan('dev'));
+        this.app.use(morgan('dev')); 
         this.app.use(express.json());
         //Para soportar envios desde formularios
         this.app.use(express.urlencoded({extended: false}))
-        this.app.use(helmet());
         this.app.use(compression());
         this.app.use(cors())
     }
 
     routes(){
-        this.app.use(indexRoutes);
         this.app.use(userRoutes);
         this.app.use(shirtRoutes)
         
@@ -53,6 +54,5 @@ class Server{
     }
 
 }
-import indesRoutes from "./routes/indexRoutes";
 const server = new Server()
 server.start()
