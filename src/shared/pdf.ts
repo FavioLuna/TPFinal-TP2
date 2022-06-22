@@ -1,4 +1,4 @@
-import pdf from 'html-pdf'
+/* import pdf from 'html-pdf'
 
 class Pdf {
 
@@ -15,4 +15,4 @@ class Pdf {
 
 }
 
-export { Pdf }
+export { Pdf } */

@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer'
+/* import nodemailer from 'nodemailer'
 
 class Email {
 
@@ -36,4 +36,4 @@ class Email {
 
 }
 
-export {Email}
+export {Email} */
