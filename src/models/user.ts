@@ -6,7 +6,7 @@ const userSchema = new Schema({
         type: String, //tipo de dato
         required: true, //si es requerido o no
         trim: true, //se usa para sacar espacios vacios adelante y detras
-        validate(value) {
+        validate(value: any) {
             if (validator.isEmpty(value)) {
                 throw new Error("Please enter a name");
             }
@@ -16,7 +16,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        validate(value){
+        validate(value: any){
             if (!validator.isEmail(value)) {
                 throw new Error("Email is not valid");
                 
