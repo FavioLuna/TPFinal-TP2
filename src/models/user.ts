@@ -33,12 +33,35 @@ const userSchema: Schema<I_UserDoc> = new Schema({
         type: String, //tipo de dato
         required: true, //si es requerido o no
         trim: true, //se usa para sacar espacios vacios adelante y detras
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        validate(value: any) {
+=======
+        validate(value: String) {
+>>>>>>> 7fa98c621a40c78a01dcc1140f05b78f0d8802d1
+            if (validator.isEmpty(value)) {
+                throw new Error("Please enter a name");
+            }
+        }
+>>>>>>> 2d0fb18a59f6f2778bd13fbf028fd4dee1d3d8ef
     },
     email: {
         type: String,
         required: true,
         unique: true,
+<<<<<<< HEAD
+=======
         trim: true,
+<<<<<<< HEAD
+=======
+>>>>>>> 7fa98c621a40c78a01dcc1140f05b78f0d8802d1
+        validate(value: any){
+            if (!validator.isEmail(value)) {
+                throw new Error("Email is not valid");
+            }
+        }
+>>>>>>> 2d0fb18a59f6f2778bd13fbf028fd4dee1d3d8ef
     },
     password: {
         type: String,

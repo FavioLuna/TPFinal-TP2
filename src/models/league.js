@@ -12,8 +12,9 @@ const leagueSchema = new mongoose_1.Schema({
         trim: true
     },
     teams: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'team'
-        }]
-});
-exports.default = (0, mongoose_1.model)('Team', leagueSchema);
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'team'
+    }]
+})
+
+exports.default = (0, mongoose_1.model)('League', leagueSchema);
