@@ -8,6 +8,7 @@ import compression from 'compression';
 //Con Cors permitimos requests de cualquier origen. Permitiendo configurar las politicas CORS.
 import cors from 'cors'; 
 import userRoutes from "./routes/userRoutes";
+import shirtRoutes from "./routes/shirtRoutes";
 
 
 class Server{
@@ -42,6 +43,8 @@ class Server{
 
     routes(){
         this.app.use(userRoutes);
+        this.app.use(shirtRoutes)
+        
     }
 
     start(){

@@ -33,7 +33,6 @@ const userSchema: Schema<I_UserDoc> = new Schema({
         type: String, //tipo de dato
         required: true, //si es requerido o no
         trim: true, //se usa para sacar espacios vacios adelante y detras
-
     },
     email: {
         type: String,
