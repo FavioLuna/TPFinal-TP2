@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import userController from '../controllers/userController';
+import extractJWT from '../middlewares/extractJWT';
 
 class UserRoutes {
     
@@ -16,17 +17,16 @@ class UserRoutes {
         //LOGIN
         this.router.post('/user/login', userController.login);
         //LOGOUT
-        this.router.post('/user/logout', userController.logout);
+        this.router.post('/user/logout',extractJWT ,userController.logout);
         //GET ALL USERS
         this.router.get('/users', userController.getAllUsers);
         //GET ALL SHIRTS OF USER 
         //this.router.get('/user/shirts', userController.getAllUserShirts);
         //GET USUARIO
-        this.router.get('/user/:id', userController.getUser);
+        this.router.get('/user/:id', extractJWT, userController.getUser);
         //DELETE USUARIO
-        this.router.delete('/user/me/:id', userController.deleteUser);
+        this.router.delete('/user/me/:id', extractJWT ,userController.deleteUser);
     }
- 
 }
 const userRoutes = new UserRoutes();
 

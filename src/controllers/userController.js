@@ -13,31 +13,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
+const createToken_1 = __importDefault(require("../functions/createToken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const mongoose_1 = __importDefault(require("mongoose"));
 class UserController {
     //Uso Promise<Response> para especificar que voy a devolver una Response
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newUser = new user_1.default(req.body); //Tomo los datos del body de la Request y los uso para crear un nuevo user
+            const uEmail = yield user_1.default.findOne({ email: req.body.email });
+            if (uEmail) {
+                return res.status(400).json({ succes: false, msg: 'Email already in use' });
+            }
+            const newUser = new user_1.default({
+                _id: new mongoose_1.default.Types.ObjectId(),
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            }); //Tomo los datos del body de la Request y los uso para crear un nuevo user
             if (!newUser) {
-                //E 400 BAD REQUEST si user es null
-                return res.status(400).json({ success: false, code: 400, message: 'Error creating User' });
+                //E 400 BAD REQUEST si user es null o hay algun campo req vacio
+                return res.status(400).json({ success: false, message: 'Error creating User' });
             }
             try {
                 yield newUser.save();
                 //S 201 CREATED
-                return res.status(201).json({ succes: true, message: "User obtained successfully", newUser });
+                return res.status(201).json({ succes: true, message: "User created successfully", newUser });
             }
             catch (error) {
                 //E 400 BAD REQUEST si hubo error
-                return res.status(400).json({ success: false, code: 400, message: error.message });
+                return res.status(400).json({ success: false, message: error.message });
             }
         });
     }
     login(req, res) {
-        res.send('Hello im LOGIN');
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.body.email || !req.body.password) {
+                return res.status(400).json({ succes: false, msg: 'Please send a email and password' });
+            }
+            const user = yield user_1.default.findOne({ email: req.body.email });
+            if (!user) {
+                return res.status(400).json({ succes: false, msg: 'User does not exists' });
+            }
+            bcrypt_1.default.compare(req.body.password, user.password, (error, result) => {
+                if (error) {
+                    return res.status(401).json({ messsage: 'Unauthorized' });
+                }
+                else if (result) {
+                    const token = (0, createToken_1.default)(user);
+                    return res.status(200).json({ message: 'Auth Successful', user, token });
+                }
+            });
+        });
     }
     logout(req, res) {
-        res.send('Hello im LOGOUT');
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -45,22 +73,22 @@ class UserController {
             //En este caso le pido todo, pero como segundo parametro puedo especificar qué ver
             //especificado dentro del segundo parametro entre comillas simples separado por espacios
             //con - le puedo sacar qué datos
-            const _id = req.params.id;
+            const id = req.params.id;
             try {
-                const user = yield user_1.default.findById(_id).populate('shirts');
+                const user = yield user_1.default.findById(id).populate('shirts');
                 if (!user) {
-                    return res.status(404).json({ succes: false, code: 404, message: 'User not found' });
+                    return res.status(404).json({ succes: false, message: 'User not found' });
                 }
                 return res.json({ succes: true, message: "User obtained successfully", user });
             }
             catch (error) {
-                return res.status(400).json({ success: false, code: 400, message: error.message });
+                return res.status(400).json({ success: false, message: error.message });
             }
         });
     }
     getAllUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield user_1.default.find();
+            const users = yield user_1.default.find().select('-password');
             return res.json(users);
         });
     }
@@ -69,18 +97,17 @@ class UserController {
     } */
     deleteUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { _id } = req.params;
-            res.json({ response: 'User Deleted successfully' });
+            const id = req.params.id;
             try {
-                const user = yield user_1.default.findById({ _id });
+                const user = yield user_1.default.findById(id);
                 if (!user) {
-                    return res.status(404).json({ succes: false, code: 404, message: 'User not found' });
+                    return res.status(404).json({ succes: false, message: 'User not found' });
                 }
-                yield user_1.default.findOneAndDelete({ _id });
+                yield user_1.default.findOneAndDelete(user.id);
                 return res.status(200).json({ succes: true, message: "User deleted successfully" });
             }
             catch (error) {
-                return res.status(400).json({ success: false, code: 400, message: error.message });
+                return res.status(400).json({ success: false, message: error.message });
             }
         });
     }
