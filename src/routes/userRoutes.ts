@@ -17,9 +17,11 @@ class UserRoutes {
         //LOGIN
         this.router.post('/user/login', userController.login);
         //LOGOUT
-        this.router.post('/user/logout',extractJWT ,userController.logout);
+        this.router.post('/user/logout/:id', extractJWT, userController.logout);
         //GET ALL USERS
         this.router.get('/users', userController.getAllUsers);
+        //PUT USER
+        this.router.put('/user/settings/:id', extractJWT, userController.makeChange);
         //GET ALL SHIRTS OF USER 
         //this.router.get('/user/shirts', userController.getAllUserShirts);
         //GET USUARIO

@@ -15,13 +15,14 @@ const beautifyUnique = require('mongoose-beautiful-unique-validation');
     o de dónde salen los atributos
 */
 export interface I_UserDoc extends Document {
+    name: string,
     email: string,
     password: string,
+    token: string,
     admin: {
         type: boolean,
         defautl: false
     },
-    token: string,
     comparePassword: (password: string) => Promise<boolean>
 }
 
@@ -51,6 +52,9 @@ const userSchema: Schema<I_UserDoc> = new Schema({
         type: Boolean,
         default: false,
     },
+    token:{
+        type: String,
+    }
     //User tiene shirts
 /*     shirts:[{
         type: Schema.Types.ObjectId, //Le digo qué tipo de datos va a guardar: el id referido al id ed las shirts

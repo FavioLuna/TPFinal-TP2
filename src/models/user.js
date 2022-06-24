@@ -25,44 +25,35 @@ const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
+        trim: true, //se usa para sacar espacios vacios adelante y detras
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
         trim: true,
-        if(validator) { }, : .isEmpty(value)
+    },
+    password: {
+        type: String,
+        minLength: 8,
+        trim: true,
+        required: true,
+    },
+    admin: {
+        type: Boolean,
+        default: false,
+    },
+    token: {
+        type: String,
     }
-}), { throw: , new: Error };
-("Please enter a name");
-email: {
-    type: String,
-        required;
-    true,
-        unique;
-    true,
-        validate(value, any);
-    {
-        if (!validator.isEmail(value)) {
-            throw new Error("Email is not valid");
-        }
-    }
-}
-password: {
-    type: String,
-        minLength;
-    8,
-        trim;
-    true,
-        required;
-    true,
-    ;
-}
-admin: {
-    type: Boolean,
-    ;
-    false,
-    ;
-}
-{
-    timestamps: true; //Agrega el createdAT y updateAT en el model
-}
-;
+    //User tiene shirts
+    /*     shirts:[{
+            type: Schema.Types.ObjectId, //Le digo qué tipo de datos va a guardar: el id referido al id ed las shirts
+            ref: 'shirt' //le referencio el modelo shirt, ya que podra tener una coleccion de shirts
+        }] */
+}, {
+    timestamps: true //Agrega el createdAT y updateAT en el model
+});
 userSchema.plugin(beautifyUnique);
 //El método .pre() toma de parametro una acción
 //en este caso es el 'save'

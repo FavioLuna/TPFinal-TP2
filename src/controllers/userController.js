@@ -60,12 +60,51 @@ class UserController {
                 }
                 else if (result) {
                     const token = (0, createToken_1.default)(user);
+                    user.token = token;
                     return res.status(200).json({ message: 'Auth Successful', user, token });
                 }
             });
         });
     }
     logout(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let token = "";
+            let id = req.params.id;
+            let user = yield user_1.default.findById(id);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            try {
+                res.locals.jwt = token;
+                user.token = token;
+                return res.status(200).json({ message: 'Success logout', user });
+            }
+            catch (error) {
+                return res.status(400).json({ success: false, message: error.message });
+            }
+        });
+    }
+    makeChange(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            let user = yield user_1.default.findById(id);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            try {
+                if (req.body.password != user.password) {
+                    let newPassword = req.body.password;
+                    user.password = yield bcrypt_1.default.hash(newPassword, 8);
+                    user.save();
+                    return res.status(200).json({ message: 'User password updated', user });
+                }
+                user.set(req.body).save();
+                return res.status(200).json({ message: 'User update', user });
+            }
+            catch (error) {
+                return res.status(400).json({ success: false, message: error.message });
+            }
+        });
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
