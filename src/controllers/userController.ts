@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import User from "../models/user";
+import User, { I_UserDoc } from "../models/user";
 import createToken from '../functions/createToken';
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose';
@@ -46,13 +46,46 @@ class UserController {
                 return res.status(401).json({messsage: 'Unauthorized'})
             }else if(result){
                 const token = createToken(user)
+                user.token = token
                 return res.status(200).json({message: 'Auth Successful', user, token})
             }
         })
     }
-    logout(req: Request, res: Response){
-        
+    async logout(req: Request, res: Response): Promise<Response>{
+        let token = ""
+        let id = req.params.id
+        let user = await User.findById(id)
+        if (!user) {
+            return res.status(404).json({message: 'User not found'})
+        }
+        try {
+            res.locals.jwt = token
+            user.token = token
+            return res.status(200).json({message: 'Success logout', user})
+        } catch (error) {
+            return res.status(400).json({ success: false, message: (error as Error).message});
+        }
     }
+    async makeChange(req: Request, res: Response): Promise<Response>{
+        const id = req.params.id
+        let user = await User.findById(id);
+        if (!user) {
+                return res.status(404).json({message: 'User not found'})
+        }
+        try {
+            if (req.body.password != user.password) {
+                let newPassword = req.body.password
+                user.password = await bcrypt.hash(newPassword, 8)
+                user.save()
+                return res.status(200).json({message: 'User password updated', user})
+            }
+            user.set(req.body).save()
+            return res.status(200).json({message: 'User update', user})
+        } catch (error) {
+            return res.status(400).json({ success: false, message: (error as Error).message});
+        }
+    }
+
     async getUser(req: Request, res: Response): Promise<Response> {
         //populete me sirve para ver el contenido del shcema.object.id
         //En este caso le pido todo, pero como segundo parametro puedo especificar qué ver

@@ -43,6 +43,9 @@ const userSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
+    token: {
+        type: String,
+    }
     //User tiene shirts
     /*     shirts:[{
             type: Schema.Types.ObjectId, //Le digo qué tipo de datos va a guardar: el id referido al id ed las shirts
