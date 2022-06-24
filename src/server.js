@@ -15,6 +15,7 @@ const cors_1 = __importDefault(require("cors"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const shirtRoutes_1 = __importDefault(require("./routes/shirtRoutes"));
 const leagueRoutes_1 = __importDefault(require("./routes/leagueRoutes"));
+const teamRoutes_1 = __importDefault(require("./routes/teamRoutes"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -43,6 +44,7 @@ class Server {
     routes() {
         this.app.use(userRoutes_1.default);
         this.app.use(shirtRoutes_1.default);
+        this.app.use(teamRoutes_1.default);
         this.app.use(leagueRoutes_1.default);
     }
     start() {

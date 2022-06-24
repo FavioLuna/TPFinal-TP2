@@ -10,6 +10,7 @@ import cors from 'cors';
 import userRoutes from "./routes/userRoutes";
 import shirtRoutes from "./routes/shirtRoutes";
 import leagueRoutes from "./routes/leagueRoutes";
+import teamRoutes from "./routes/teamRoutes";
 
 
 class Server{
@@ -45,6 +46,7 @@ class Server{
     routes(){
         this.app.use(userRoutes);
         this.app.use(shirtRoutes)
+        this.app.use(teamRoutes)
         this.app.use(leagueRoutes)
         
     }
