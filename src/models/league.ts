@@ -2,10 +2,6 @@ import {Schema, model } from 'mongoose'
 
 const leagueSchema = new Schema(
     {
-        id:{
-            type: String,
-            required: true,
-        },
         name:{
             type: String,
             required: false,
@@ -18,4 +14,4 @@ const leagueSchema = new Schema(
     }
 )
 
-export default model('Team', leagueSchema)
+export default model('League', leagueSchema)

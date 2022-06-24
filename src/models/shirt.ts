@@ -1,12 +1,8 @@
-import {Schema, model } from 'mongoose'
+import {Schema, model } from "mongoose" 
 
 const shirtSchema = new Schema(
     {
-        id:{
-            type: String,
-            required: true,
-        },
-
+      
         name:{
             type: String,
             required: false,
@@ -16,6 +12,10 @@ const shirtSchema = new Schema(
         number:{
             type: Number,
             required: false,
+        },
+
+        price:{
+            type: Number,
         },
 
         description:{

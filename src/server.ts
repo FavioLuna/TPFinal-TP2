@@ -9,6 +9,7 @@ import compression from 'compression';
 import cors from 'cors'; 
 import userRoutes from "./routes/userRoutes";
 import shirtRoutes from "./routes/shirtRoutes";
+import leagueRoutes from "./routes/leagueRoutes";
 
 
 class Server{
@@ -44,6 +45,7 @@ class Server{
     routes(){
         this.app.use(userRoutes);
         this.app.use(shirtRoutes)
+        this.app.use(leagueRoutes)
         
     }
 

@@ -2,10 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const shirtSchema = new mongoose_1.Schema({
-    id: {
-        type: String,
-        required: true,
-    },
     name: {
         type: String,
         required: false,
@@ -14,6 +10,9 @@ const shirtSchema = new mongoose_1.Schema({
     number: {
         type: Number,
         required: false,
+    },
+    price: {
+        type: Number,
     },
     description: {
         type: String,
@@ -30,6 +29,14 @@ const shirtSchema = new mongoose_1.Schema({
     year: {
         type: Number,
         required: true
+    },
+    team: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'team'
+    },
+    league: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'league'
     }
 });
 exports.default = (0, mongoose_1.model)('Shirt', shirtSchema);
