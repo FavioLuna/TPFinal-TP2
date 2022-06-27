@@ -12,8 +12,4 @@ const leagueSchema = new mongoose_1.Schema({
             ref: 'team'
         }]
 });
-<<<<<<< HEAD
 exports.default = (0, mongoose_1.model)('League', leagueSchema);
-=======
-exports.default = (0, mongoose_1.model)('Team', leagueSchema);
->>>>>>> logout-Favio

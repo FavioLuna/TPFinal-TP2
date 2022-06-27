@@ -8,13 +8,9 @@ import compression from 'compression';
 //Con Cors permitimos requests de cualquier origen. Permitiendo configurar las politicas CORS.
 import cors from 'cors'; 
 import userRoutes from "./routes/userRoutes";
-<<<<<<< HEAD
 import shirtRoutes from "./routes/shirtRoutes";
 import leagueRoutes from "./routes/leagueRoutes";
 import teamRoutes from "./routes/teamRoutes";
-=======
-//import shirtRoutes from "./routes/shirtRoutes";
->>>>>>> logout-Favio
 
 
 class Server{
@@ -42,20 +38,16 @@ class Server{
         this.app.use(morgan('dev')); 
         this.app.use(express.json());
         //Para soportar envios desde formularios
-        this.app.use(express.urlencoded({extended: false}))
+        this.app.use(express.urlencoded({extended: true}))
         this.app.use(compression());
         this.app.use(cors())
     }
 
     routes(){
         this.app.use(userRoutes);
-<<<<<<< HEAD
         this.app.use(shirtRoutes)
         this.app.use(teamRoutes)
         this.app.use(leagueRoutes)
-=======
-        //this.app.use(shirtRoutes)
->>>>>>> logout-Favio
         
     }
 
