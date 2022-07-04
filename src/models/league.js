@@ -7,9 +7,9 @@ const leagueSchema = new mongoose_1.Schema({
         required: false,
         trim: true
     },
-    teams: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'team'
-        }]
+    img: {
+        type: String,
+        required: true
+    }
 });
 exports.default = (0, mongoose_1.model)('League', leagueSchema);
