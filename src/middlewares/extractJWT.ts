@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
-import User from '../models/user'
+
 
 const extractJWT = async (req: Request, res: Response, next: NextFunction) => {
     let token = req.headers.authorization?.split(' ')[1]; //Del Authorization del Header del request, tomo la segunda parte que es el token. Ya que la primera es la palabra reservada Bearer

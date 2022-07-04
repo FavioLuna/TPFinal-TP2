@@ -20,10 +20,8 @@ class UserRoutes {
         this.router.post('/user/logout/:id', extractJWT_1.default, userController_1.default.logout);
         //GET ALL USERS
         this.router.get('/users', userController_1.default.getAllUsers);
-        //PUT USER
-        this.router.put('/user/settings/:id', extractJWT_1.default, userController_1.default.makeChange);
-        //GET ALL SHIRTS OF USER 
-        //this.router.get('/user/shirts', userController.getAllUserShirts);
+        //PUT USER NAME
+        this.router.put('/user/settings/:id', extractJWT_1.default, userController_1.default.changeName);
         //GET USUARIO
         this.router.get('/user/:id', extractJWT_1.default, userController_1.default.getUser);
         //DELETE USUARIO

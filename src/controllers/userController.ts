@@ -17,7 +17,8 @@ class UserController {
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            admin: req.body.admin
         }); //Tomo los datos del body de la Request y los uso para crear un nuevo user
         if (!newUser) {
             //E 400 BAD REQUEST si user es null o hay algun campo req vacio
@@ -41,7 +42,14 @@ class UserController {
         if (!user) {
             return res.status(400).json({succes: false, msg: 'User does not exists'})
         }
-        bcrypt.compare(req.body.password, user.password, (error, result) => {
+        const isMatch = await user.comparePassword(req.body.password)
+        if (isMatch) {
+            const token = createToken(user)
+                user.token = token
+                return res.status(200).json({message: 'Auth Successful', user, token})
+        }
+        return res.status(401).json({messsage: 'Unauthorized'}) 
+        /* bcrypt.compare(req.body.password, user.password, (error, result) => {
             if (error) {
                 return res.status(401).json({messsage: 'Unauthorized'})
             }else if(result){
@@ -49,7 +57,7 @@ class UserController {
                 user.token = token
                 return res.status(200).json({message: 'Auth Successful', user, token})
             }
-        })
+        }) */
     }
     async logout(req: Request, res: Response): Promise<Response>{
         let token = ""
@@ -66,34 +74,24 @@ class UserController {
             return res.status(400).json({ success: false, message: (error as Error).message});
         }
     }
-    async makeChange(req: Request, res: Response): Promise<Response>{
+    async changeName(req: Request, res: Response): Promise<Response>{
         const id = req.params.id
         let user = await User.findById(id);
         if (!user) {
                 return res.status(404).json({message: 'User not found'})
         }
         try {
-            if (req.body.password != user.password) {
-                let newPassword = req.body.password
-                user.password = await bcrypt.hash(newPassword, 8)
-                user.save()
-                return res.status(200).json({message: 'User password updated', user})
-            }
             user.set(req.body).save()
-            return res.status(200).json({message: 'User update', user})
+            return res.status(200).json({message: 'User name updated', user})
         } catch (error) {
             return res.status(400).json({ success: false, message: (error as Error).message});
         }
     }
 
     async getUser(req: Request, res: Response): Promise<Response> {
-        //populete me sirve para ver el contenido del shcema.object.id
-        //En este caso le pido todo, pero como segundo parametro puedo especificar qué ver
-        //especificado dentro del segundo parametro entre comillas simples separado por espacios
-        //con - le puedo sacar qué datos
         const id = req.params.id 
         try {
-            const user = await User.findById(id).populate('shirts')
+            const user = await User.findById(id)
             if (!user) {
                 return res.status(404).json({succes: false, message: 'User not found'})
             }
@@ -103,12 +101,9 @@ class UserController {
         }
     }
     async getAllUsers(req: Request, res: Response): Promise<Response> {
-        const users = await User.find().select('-password');
+        const users = await User.find().select('-password');//con - puedo elejir qué datos no traer
         return res.json(users);
     }
-    /*  getAllUserShirts(req: Request, res: Response){
-        res.send('Hello im me')
-    } */
     async deleteUser(req: Request, res: Response): Promise<Response> {
         const id = req.params.id
         try {
@@ -116,7 +111,7 @@ class UserController {
             if (!user) {
                 return res.status(404).json({succes: false, message: 'User not found'})
             }
-            await User.findOneAndDelete(user.id);
+            await user.remove()
             return res.status(200).json({succes: true, message: "User deleted successfully"})
         } catch (error) {
             return res.status(400).json({ success: false, message: (error as Error).message});

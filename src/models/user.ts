@@ -55,11 +55,6 @@ const userSchema: Schema<I_UserDoc> = new Schema({
     token:{
         type: String,
     }
-    //User tiene shirts
-/*     shirts:[{
-        type: Schema.Types.ObjectId, //Le digo qué tipo de datos va a guardar: el id referido al id ed las shirts
-        ref: 'shirt' //le referencio el modelo shirt, ya que podra tener una coleccion de shirts
-    }] */
 },{
     timestamps: true //Agrega el createdAT y updateAT en el model
 });

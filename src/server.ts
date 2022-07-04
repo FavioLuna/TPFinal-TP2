@@ -38,7 +38,7 @@ class Server{
         this.app.use(morgan('dev')); 
         this.app.use(express.json());
         //Para soportar envios desde formularios
-        this.app.use(express.urlencoded({extended: false}))
+        this.app.use(express.urlencoded({extended: true}))
         this.app.use(compression());
         this.app.use(cors())
     }
