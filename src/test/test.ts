@@ -9,9 +9,9 @@ async function main() {
     await pdf.crear("hola mundo",archivo);
    
     const email : Email = new Email();
-    email.enviar("tp2.test@yahoo.com","Asunto","Cuerpo mensaje",archivo);
+    email.enviar("tp2.test@yahoo.com"," tp2 test","Cuerpo mensaje",archivo);
     console.log('test');
 
 }
-
+//testearlo con node ./src/test/test.js
 main(); 
