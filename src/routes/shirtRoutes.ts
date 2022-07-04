@@ -10,10 +10,10 @@ class ShirtRouter{
     }
 
     routes(){
-        this.router.post("/shirts", shirtController.CreateShirt);
+        this.router.post("/shirt", shirtController.CreateShirt);
         this.router.get("/shirts", shirtController.getAllShirts)
-        this.router.delete('/shirts/:id', shirtController.deleteShirt)
-        this.router.put("/shirts/:id", shirtController.updateShirt)
+        this.router.delete('/shirt/:id', shirtController.deleteShirt)
+        this.router.put("/shirt/:id", shirtController.updateShirt)
     }
 }
 

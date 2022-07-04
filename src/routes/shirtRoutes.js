@@ -11,10 +11,10 @@ class ShirtRouter {
             this.routes();
     }
     routes() {
-        this.router.post("/shirts", shirtController_1.default.CreateShirt);
+        this.router.post("/shirt", shirtController_1.default.CreateShirt);
         this.router.get("/shirts", shirtController_1.default.getAllShirts);
-        this.router.delete('/shirts/:id', shirtController_1.default.deleteShirt);
-        this.router.put("/shirts/:id", shirtController_1.default.updateShirt);
+        this.router.delete('/shirt/:id', shirtController_1.default.deleteShirt);
+        this.router.put("/shirt/:id", shirtController_1.default.updateShirt);
     }
 }
 const shirtRouter = new ShirtRouter();

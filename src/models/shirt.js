@@ -30,13 +30,13 @@ const shirtSchema = new mongoose_1.Schema({
         type: Number,
         required: true
     },
-    team: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'team'
-    },
-    league: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'league'
-    }
+    // team:{
+    //     type: Schema.Types.ObjectId,
+    //     ref:'team'
+    // },
+    // league:{
+    //     type: Schema.Types.ObjectId,
+    //     ref:'league'
+    // }
 });
 exports.default = (0, mongoose_1.model)('Shirt', shirtSchema);

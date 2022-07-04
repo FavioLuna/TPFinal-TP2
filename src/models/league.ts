@@ -7,10 +7,7 @@ const leagueSchema = new Schema(
             required: false,
             trim: true
         },
-        teams:[{
-            type: Schema.Types.ObjectId,
-            ref:'team'
-        }]
+        
     }
 )
 

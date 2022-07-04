@@ -40,15 +40,15 @@ const shirtSchema = new Schema(
             required: true
         },
 
-        team:{
-            type: Schema.Types.ObjectId,
-            ref:'team'
+         team:{
+             type: Schema.Types.ObjectId,
+             ref:'team'
         },
 
-        league:{
-            type: Schema.Types.ObjectId,
-            ref:'league'
-        }
+         league:{
+             type: Schema.Types.ObjectId,
+             ref:'league'
+         }
     }
 )
 

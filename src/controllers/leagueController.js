@@ -20,7 +20,6 @@ class LeagueController {
             const newLeague = new league_1.default({
                 _id: new mongoose_1.default.Types.ObjectId(),
                 name: req.body.name,
-                team: req.body.team
             });
             yield newLeague.save();
             res.json({ data: newLeague });
