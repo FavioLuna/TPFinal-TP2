@@ -1,7 +1,42 @@
 "use strict";
-/* import nodemailer from 'nodemailer'
-
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Email = void 0;
+const nodemailer_1 = __importDefault(require("nodemailer"));
 class Email {
+    enviar(para, asunto, cuerpoMensaje, pathArchivoAdjunto) {
+        return new Promise((resolve, reject) => {
+            var transporter = nodemailer_1.default.createTransport({
+                service: 'hotmail',
+                auth: {
+                    user: 'tp2.test@outlook.com',
+                    pass: 'O864Rfvh'
+                },
+                debug: false,
+                logger: true
+            });
+            const mailOptions = {
+                from: 'tp2.test@outlook.com',
+                to: para,
+                subject: asunto,
+                text: cuerpoMensaje,
+                attachments: [{ path: pathArchivoAdjunto }]
+            };
+            transporter.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    throw err;
+                }
+                else {
+                    console.log(info);
+                }
+            });
+        });
+    }
+}
+exports.Email = Email;
+/* class Email {
 
     enviar(para: string, asunto: string, cuerpoMensaje: string, pathArchivoAdjunto: string) : Promise<any> {
         return new Promise( (resolve,reject) => {
