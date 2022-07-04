@@ -1,4 +1,4 @@
-/* import {Email} from '../shared/email'
+import {Email} from '../shared/email'
 import {Pdf} from '../shared/pdf'
 
 async function main() {
@@ -14,4 +14,4 @@ async function main() {
 
 }
 
-main(); */
+main(); 
