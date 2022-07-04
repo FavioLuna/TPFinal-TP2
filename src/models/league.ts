@@ -7,14 +7,10 @@ const leagueSchema = new Schema(
             required: false,
             trim: true
         },
-<<<<<<< HEAD
-        
-=======
         img: {
             type: String,
-            required: true
+            required: false
         }
->>>>>>> 0c4fe5dc5851df8d1fa2b35fd688582792466f3c
     }
 )
 

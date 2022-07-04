@@ -8,6 +8,7 @@ class LeagueController{
         const newLeague = new League({
             _id: new mongoose.Types.ObjectId(),
             name: req.body.name,
+            img: req.body.img
         });
         await newLeague.save()
         res.json({data: newLeague})
