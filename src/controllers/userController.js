@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
 const createToken_1 = __importDefault(require("../functions/createToken"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = __importDefault(require("mongoose"));
 class UserController {
     //Uso Promise<Response> para especificar que voy a devolver una Response
@@ -28,7 +27,8 @@ class UserController {
                 _id: new mongoose_1.default.Types.ObjectId(),
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password
+                password: req.body.password,
+                admin: req.body.admin
             }); //Tomo los datos del body de la Request y los uso para crear un nuevo user
             if (!newUser) {
                 //E 400 BAD REQUEST si user es null o hay algun campo req vacio
@@ -54,16 +54,22 @@ class UserController {
             if (!user) {
                 return res.status(400).json({ succes: false, msg: 'User does not exists' });
             }
-            bcrypt_1.default.compare(req.body.password, user.password, (error, result) => {
+            const isMatch = yield user.comparePassword(req.body.password);
+            if (isMatch) {
+                const token = (0, createToken_1.default)(user);
+                user.token = token;
+                return res.status(200).json({ message: 'Auth Successful', user, token });
+            }
+            return res.status(401).json({ messsage: 'Unauthorized' });
+            /* bcrypt.compare(req.body.password, user.password, (error, result) => {
                 if (error) {
-                    return res.status(401).json({ messsage: 'Unauthorized' });
+                    return res.status(401).json({messsage: 'Unauthorized'})
+                }else if(result){
+                    const token = createToken(user)
+                    user.token = token
+                    return res.status(200).json({message: 'Auth Successful', user, token})
                 }
-                else if (result) {
-                    const token = (0, createToken_1.default)(user);
-                    user.token = token;
-                    return res.status(200).json({ message: 'Auth Successful', user, token });
-                }
-            });
+            }) */
         });
     }
     logout(req, res) {
@@ -84,7 +90,7 @@ class UserController {
             }
         });
     }
-    makeChange(req, res) {
+    changeName(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             let user = yield user_1.default.findById(id);
@@ -92,14 +98,8 @@ class UserController {
                 return res.status(404).json({ message: 'User not found' });
             }
             try {
-                if (req.body.password != user.password) {
-                    let newPassword = req.body.password;
-                    user.password = yield bcrypt_1.default.hash(newPassword, 8);
-                    user.save();
-                    return res.status(200).json({ message: 'User password updated', user });
-                }
                 user.set(req.body).save();
-                return res.status(200).json({ message: 'User update', user });
+                return res.status(200).json({ message: 'User name updated', user });
             }
             catch (error) {
                 return res.status(400).json({ success: false, message: error.message });
@@ -108,13 +108,9 @@ class UserController {
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            //populete me sirve para ver el contenido del shcema.object.id
-            //En este caso le pido todo, pero como segundo parametro puedo especificar qué ver
-            //especificado dentro del segundo parametro entre comillas simples separado por espacios
-            //con - le puedo sacar qué datos
             const id = req.params.id;
             try {
-                const user = yield user_1.default.findById(id).populate('shirts');
+                const user = yield user_1.default.findById(id);
                 if (!user) {
                     return res.status(404).json({ succes: false, message: 'User not found' });
                 }
@@ -127,13 +123,10 @@ class UserController {
     }
     getAllUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield user_1.default.find().select('-password');
+            const users = yield user_1.default.find().select('-password'); //con - puedo elejir qué datos no traer
             return res.json(users);
         });
     }
-    /*  getAllUserShirts(req: Request, res: Response){
-        res.send('Hello im me')
-    } */
     deleteUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
@@ -142,7 +135,7 @@ class UserController {
                 if (!user) {
                     return res.status(404).json({ succes: false, message: 'User not found' });
                 }
-                yield user_1.default.findOneAndDelete(user.id);
+                yield user.remove();
                 return res.status(200).json({ succes: true, message: "User deleted successfully" });
             }
             catch (error) {
